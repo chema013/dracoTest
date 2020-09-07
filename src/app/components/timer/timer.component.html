@@ -1,0 +1,59 @@
+<app-loading class="m-5" *ngIf="loading"></app-loading>
+
+<ng-template #contenido let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Titulo del modal</h4>
+        <button class="close" aria-label="clase" type="button" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        Contenido del modal
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="modal.close()">Ok</button>
+    </div>
+</ng-template>
+
+<button type="button" class="btn btn-outline-danger" (click)="modal.open(contenido)">Lanzar modal</button>
+
+
+<div class="card text-center" *ngIf="!loading">
+    <div class="card-header">
+        {{ tarea.titulo }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Descripción</h5>
+        <p class="card-text"> {{ tarea.descripcion }} </p>
+        <!-- Este es el temporizador -->
+        <div class="row justify-content-center">
+            <div class="timer" *ngIf="time">
+                <p class="unit">
+                    <strong> {{ time.hours }} </strong>
+                    <span> Horas </span>
+                </p>
+                <p class="unit">
+                    <strong> {{ time.minutes }} </strong>
+                    <span> Minutos </span>
+                </p>
+                <p class="unit">
+                    <strong> {{ time.seconds }} </strong>
+                    <span> Segundos </span>
+                </p>
+            </div>
+        </div>
+        <!-- Botones controles -->
+        <button type="button" class="btn btn-outline-primary" (click)="iniciar()" [disabled]="disabledPlay || deshabilitaTodo">
+            <div><i class="btn far fa-play-circle fa-5x"></i></div>
+        </button>
+        <button type="button" class="btn btn-outline-primary" (click)="pausarf()" [disabled]="!disabledPlay || deshabilitaTodo">
+            <div><i class="btn far fa-pause-circle fa-5x"></i></div>
+        </button>
+        <button type="button" class="btn btn-outline-primary" (click)="restart()" [disabled]="!disabledPlay || deshabilitaTodo">
+            <div><i class="btn far fa-stop-circle fa-5x"></i></div>
+        </button>
+    </div>
+    <div class="card-footer text-muted">
+        Duracion {{ tarea.minutos }} Minutos : {{ tarea.segundos }} Segundos
+    </div>
+</div>

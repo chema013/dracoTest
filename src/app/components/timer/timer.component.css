@@ -1,0 +1,13 @@
+.timer {
+    display: flex;
+    text-align: center;
+}
+
+.timer .unit {
+    padding: 1em;
+}
+
+.timer .unit strong {
+    display: block;
+    font-size: 2em;
+}
