@@ -1,1 +1,38 @@
-<p>home works!</p>
+<ngb-carousel class="mt-5" *ngIf="images">
+    <ng-template ngbSlide>
+        <div class="picsum-img-wrapper">
+            <img [src]="images[0]" alt="Random first slide">
+        </div>
+        <div class="carousel-caption row justify-content-center">
+            <h3>Organiza tus Actividades diarias</h3>
+            <p class="text-white">Crea tareas organizadas por fecha y con el tiempo que planeas realizarlas.</p>
+            <div class="col-3">
+                <button class="btn btn-outline-light btn-block" (click)="iradmin()">Ir</button>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template ngbSlide>
+        <div class="picsum-img-wrapper">
+            <img [src]="images[1]" alt="Random second slide">
+        </div>
+        <div class="carousel-caption row justify-content-center">
+            <h3 class="text-secondary">Ve un Historial de tus progresos semanales</h3>
+            <p class="text-secondary">Podras ver el historial de tus progresos gráficamente en la seccion del historial.</p>
+            <div class="col-3">
+                <button class="btn btn-outline-secondary btn-block" (click)="irhistorial()">Ir</button>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template ngbSlide>
+        <div class="picsum-img-wrapper">
+            <img [src]="images[2]" alt="Random third slide">
+        </div>
+        <div class="carousel-caption row justify-content-center">
+            <h3>Cronometriza tus tiempos</h3>
+            <p class="text-white">Crea tareas pendientes que tengas por hacer y mide el tiempo que te toma hacerlas.</p>
+            <div class="col-3">
+                <button class="btn btn-outline-light btn-block" (click)="iradmin()">Ir</button>
+            </div>
+        </div>
+    </ng-template>
+</ngb-carousel>

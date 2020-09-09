@@ -1,29 +1,38 @@
-<div class="row row-cols-1 row-cols-md-3">
-    <div class="col mb-4" *ngFor="let tarea of tareas; let i = index">
-        <div class="card">
-            <!-- <img src="..." class="card-img-top" alt="..."> -->
-            <div class="card-body">
-                <h5 class="card-title"> {{ tarea.titulo }} </h5>
-                <p class="card-text"> {{ tarea.descripcion }} </p>
-                <div class="col">
-                    <button class="btn btn-outline-danger mx-3" (click)="borrarTareas( tarea._id, i )">Eliminar</button>
-                    <button class="btn btn-outline-primary" [routerLink]="['editar', tarea._id]">Editar</button>
-                </div>
-                <div class="col">
-                    <button class="btn btn-outline-success m-3" [routerLink]="['timer', tarea._id]">Comenzar</button>
-                </div>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted"> {{tarea.minutos}} Minutos : {{tarea.segundos}} segundos </small>
-            </div>
+<app-loading class="mt-5" *ngIf="loading"></app-loading>
+
+<!-- Alerta de borrado -->
+<div class="row">
+    <div class="col mt-5">
+        <div *ngIf="borradoStatus" class="alert alert-warning alert-dismissible fade show" role="alert">
+            Tarea borrada exitsamente
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     </div>
 </div>
 
-<!-- Alerta de borrado -->
-<div *ngIf="borradoStatus" class="alert alert-success alert-dismissible fade show" role="alert">
-    Tarea borrada exitsamente
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+<div class="row row-cols-1 row-cols-md-3 mt-3" *ngIf="!loading">
+    <div class="col mb-4" *ngFor="let tarea of tareas; let i = index">
+        <div class="card text-white border-light bg-info">
+            <!-- <img src="..." class="card-img-top" alt="..."> -->
+            <div class="card-body text-center border-light">
+                <h5 class="card-title"> {{ tarea.titulo }} </h5>
+                <p class="card-text"> {{ tarea.descripcion }} </p>
+                <p class="card-text"> <strong>Fecha:</strong> {{ tarea.fecha.year }} / {{ tarea.fecha.month }} / {{ tarea.fecha.day }} </p>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-sm mx-1" (click)="borrarTareas( tarea._id, i )">Eliminar</button>
+                        <button class="btn btn-primary btn-sm mx-1" [routerLink]="['editar', tarea._id]">Editar</button>
+                    </div>
+                </div>
+                <div class="col mt-2">
+                    <button class="btn btn-success btn-block" [routerLink]="['timer', tarea._id]">Comenzar</button>
+                </div>
+            </div>
+            <div class="card-footer bg-secondary border-light">
+                <small class="text-light"> <strong>Duración: </strong> {{tarea.minutos}} Minutos : {{tarea.segundos}} segundos </small>
+            </div>
+        </div>
+    </div>
 </div>

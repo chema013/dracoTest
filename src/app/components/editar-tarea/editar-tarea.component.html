@@ -1,8 +1,14 @@
+<div class="row">
+    <div class="col text-center text-secondary mt-5">
+        <h2>Editar Tarea</h2>
+    </div>
+</div>
+
 <form autocomplete="off" [formGroup]="forma" (ngSubmit)="actualizar()" class="mt-5">
 
     <fieldset disabled>
         <div class="form-group row">
-            <label class="col-2 col-form-label">Titulo</label>
+            <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-form-label text-secondary"><strong>Titulo</strong></label>
             <div class="col">
                 <input class="form-control" type="text" placeholder="Titulo" formControlName="titulo" [class.is-invalid]="tituloNoValido">
                 <small *ngIf="tituloNoValido" class="text-danger">Ingrese al menos 5 letras</small>
@@ -11,45 +17,51 @@
     </fieldset>
 
     <div class="form-group row">
-        <label class="col-2 col-form-label">Descripción</label>
+        <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-form-label text-secondary"><strong>Descripción</strong></label>
         <div class="col">
             <textarea class="form-control" placeholder="Escribe una descripcion de la tarea" rows="3" formControlName="descripcion" [class.is-invalid]="descripcionNoValido"></textarea>
             <small *ngIf="descripcionNoValido" class="text-danger">Ingrese al menos 5 letras</small>
         </div>
     </div>
 
+    <!-- aqui va el tiempo -->
+
     <div class="form-group row">
-        <label class="col-2 col-form-label"></label>
+        <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-form-label text-secondary"><strong>Duración</strong></label>
         <div class="col">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" (click)="personalizado = !personalizado" required>
-                <label class="form-check-label" for="invalidCheck2"><small color="primary">Introducir tiempo personalizado</small></label>
-            </div>
+            <select class="form-control" formControlName="selector" (change)="onSelect($event.target.value)" [class.is-invalid]="selectorNoValido">
+                <option value="sel">Seleccionar duración</option>
+                <option value="per">Personalizar Duración</option>
+            </select>
+            <small *ngIf="selectorNoValido" class="text-danger">Ingrese una duración</small>
         </div>
     </div>
-    <div *ngIf="personalizado === false" class="form-group row">
-        <label class="col-2 col-form-label">Duración</label>
+
+
+    <div *ngIf="selecccionado" class="form-group row">
+        <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-form-label text-secondary"><strong>Duración</strong></label>
         <div class="col">
-            <select class="custom-select mr-sm-2" formControlName="selector">
+            <select class="form-control" formControlName="selectorDuracion" [class.is-invalid]="selNoValido" (change)="HabilitaB()">
                 <option value="corta">Corta: 30 min o menos</option>
                 <option value="media">Media: 30 min a 1 hr</option>
                 <option value="larga">Larga: más de 1 hr</option>
             </select>
+            <small *ngIf="selNoValido" class="text-danger">Selecciona una duración predeteminada</small>
         </div>
     </div>
     <div *ngIf="personalizado" class="form-group row">
-        <label class="col-2 col-form-label">Duración</label>
+        <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-form-label text-secondary"><strong>Duración</strong></label>
         <div class="col">
-            <input class="form-control mb-2" type="number" placeholder="Minutos" formControlName="minutos" [class.is-invalid]="minutosNoValido">
-            <input class="form-control" type="number" placeholder="Segundos" formControlName="segundos" [class.is-invalid]="segundosNoValido">
+            <input class="form-control mb-2" type="number" placeholder="Minutos" formControlName="minutos" [class.is-invalid]="minutosNoValido" (change)="HabilitaB()">
+            <input class="form-control" type="number" placeholder="Segundos" formControlName="segundos" [class.is-invalid]="segundosNoValido" (change)="HabilitaB()">
             <small *ngIf="minutosNoValido || segundosNoValido" class="text-danger">Ingrese un valor en minutos y segundos no mayor a 2 horas</small>
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-2 col-form-label">&nbsp;</label>
+        <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-form-label text-secondary">&nbsp;</label>
         <div class="input-group col">
-            <button type="submit" class="btn btn-outline-primary btn-block">
+            <button [disabled]="habilitaBoton" type="submit" class="btn btn-outline-primary btn-block">
                 Enviar
             </button>
         </div>

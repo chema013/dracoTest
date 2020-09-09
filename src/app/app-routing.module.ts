@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { AdministrarTareasComponent } from './components/administrar-tareas/administrar-tareas.component';
 import { EditarTareaComponent } from './components/editar-tarea/editar-tarea.component';
 import { TimerComponent } from './components/timer/timer.component';
+import { HistorialComponent } from './components/historial/historial.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'administrar', component: AdministrarTareasComponent },
   { path: 'administrar/editar/:id', component: EditarTareaComponent },
   { path: 'administrar/timer/:id', component: TimerComponent },
+  { path: 'historial', component: HistorialComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];
 

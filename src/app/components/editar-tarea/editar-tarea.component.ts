@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TareasService } from '../../services/tareas.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-editar-tarea',
@@ -13,16 +13,23 @@ export class EditarTareaComponent implements OnInit {
   forma: FormGroup;
   tarea: any;
   personalizado = false;
+  selecccionado = false;
+  habilitaBoton = false;
 
   constructor( private tareasServicio: TareasService,
                private fb: FormBuilder,
-               private activatedRoute: ActivatedRoute){
+               private activatedRoute: ActivatedRoute,
+               private router: Router){
     let id: string;
     this.activatedRoute.paramMap.subscribe(params => {
           id = params.get('id');
           this.cargarTarea(id);
     });
     this.crearFormulario();
+  }
+
+  get selNoValido(): boolean {
+    return this.forma.get('selectorDuracion').invalid && this.forma.get('selectorDuracion').touched;
   }
 
   get minutosNoValido(): boolean {
@@ -45,6 +52,10 @@ export class EditarTareaComponent implements OnInit {
     return this.forma.get('duracion').invalid && this.forma.get('duracion').touched;
   }
 
+  get selectorNoValido(): boolean {
+    return this.forma.get('selector').invalid && this.forma.get('selector').touched;
+  }
+
   ngOnInit(): void {
   }
 
@@ -55,8 +66,26 @@ export class EditarTareaComponent implements OnInit {
       minutos: ['', [ Validators.max(120), Validators.min(0)] ],
       segundos: ['', [ Validators.max(60), Validators.min(0)]],
       creacion: [''],
-      selector: ['']
+      selector: ['', Validators.required],
+      selectorDuracion: ['']
     });
+  }
+
+  onSelect( valor: any ): void{
+    this.habilitaBoton = true;
+    switch (valor) {
+      case 'sel':
+        this.selecccionado = true;
+        this.personalizado = false;
+        break;
+        case 'per':
+          this.selecccionado = false;
+          this.personalizado = true;
+          break;
+      default:
+        console.log('Error de envio');
+        break;
+    }
   }
 
   cargarDataAlFormulario( data: any): void{
@@ -80,7 +109,7 @@ export class EditarTareaComponent implements OnInit {
         control.markAsTouched();
       });
     }
-    switch (this.forma.value.selector) {
+    switch (this.forma.value.selectorDuracion) {
       case 'corta':
         this.forma.value.minutos = 30;
         this.forma.value.segundos = 0;
@@ -96,7 +125,12 @@ export class EditarTareaComponent implements OnInit {
           }
     this.forma.value.creacion = Date();
     this.forma.value.titulo = this.tarea.titulo;
-    console.log( this.forma );
     this.tareasServicio.actualizarTarea(this.tarea._id, this.forma.value);
+    this.router.navigate(['/administrar']);
   }
+
+  HabilitaB(): void {
+    this.habilitaBoton = false;
+  }
+
 }

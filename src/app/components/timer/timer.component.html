@@ -1,28 +1,20 @@
-<app-loading class="m-5" *ngIf="loading"></app-loading>
+<app-loading class="mt-5" *ngIf="loading"></app-loading>
 
-<ng-template #contenido let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title">Titulo del modal</h4>
-        <button class="close" aria-label="clase" type="button" (click)="modal.dismiss()">
-        <span aria-hidden="true">&times;</span>
-    </button>
+<div class="row">
+    <div class="col mt-5">
+        <div *ngIf="deshabilitaTodo">
+            <p *ngFor="let alert of alerts">
+                <ngb-alert [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
+            </p>
+        </div>
     </div>
-    <div class="modal-body">
-        Contenido del modal
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="modal.close()">Ok</button>
-    </div>
-</ng-template>
+</div>
 
-<button type="button" class="btn btn-outline-danger" (click)="modal.open(contenido)">Lanzar modal</button>
-
-
-<div class="card text-center" *ngIf="!loading">
-    <div class="card-header">
-        {{ tarea.titulo }}
+<div class="card text-center border-light" *ngIf="!loading">
+    <div class="card-header text-light bg-success border-light">
+        <h3>{{ tarea.titulo }}</h3>
     </div>
-    <div class="card-body">
+    <div class="card-body bg-light border-light">
         <h5 class="card-title">Descripción</h5>
         <p class="card-text"> {{ tarea.descripcion }} </p>
         <!-- Este es el temporizador -->
@@ -43,17 +35,24 @@
             </div>
         </div>
         <!-- Botones controles -->
-        <button type="button" class="btn btn-outline-primary" (click)="iniciar()" [disabled]="disabledPlay || deshabilitaTodo">
-            <div><i class="btn far fa-play-circle fa-5x"></i></div>
-        </button>
-        <button type="button" class="btn btn-outline-primary" (click)="pausarf()" [disabled]="!disabledPlay || deshabilitaTodo">
-            <div><i class="btn far fa-pause-circle fa-5x"></i></div>
-        </button>
-        <button type="button" class="btn btn-outline-primary" (click)="restart()" [disabled]="!disabledPlay || deshabilitaTodo">
-            <div><i class="btn far fa-stop-circle fa-5x"></i></div>
-        </button>
+        <div class="col">
+            <button type="button" class="btn" (click)="iniciar()" [disabled]="disabledPlay || deshabilitaTodo">
+                <div><i class="btn far fa-play-circle fa-4x"></i></div>
+            </button>
+            <button type="button" class="btn" (click)="pausarf()" [disabled]="!disabledPlay || deshabilitaTodo">
+                <div><i class="btn far fa-pause-circle fa-4x"></i></div>
+            </button>
+            <button type="button" class="btn" (click)="restart()" [disabled]="!disabledPlay || deshabilitaTodo">
+                <div><i class="btn far fa-stop-circle fa-4x"></i></div>
+            </button>
+        </div>
+        <div class="col mt-2">
+            <button type="button" class="btn btn-outline-success btn-block" (click)="tareaCompletada(tarea._id)" [disabled]="!disabledPlay || deshabilitaTodo">
+                <div class="d-flex justify-content-center align-items-center"><i class="far fa-check-circle fa-2x"></i><div class="mx-1">Tarea Completada</div></div>
+            </button>
+        </div>
     </div>
-    <div class="card-footer text-muted">
+    <div class="card-footer border-light text-light bg-success">
         Duracion {{ tarea.minutos }} Minutos : {{ tarea.segundos }} Segundos
     </div>
 </div>

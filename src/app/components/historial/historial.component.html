@@ -1,0 +1,45 @@
+<app-loading class="mt-t" *ngIf="loading"></app-loading>
+
+<div class="row">
+    <div class="col text-secondary text-center mt-3">
+        <h1>Historial</h1>
+        <p class="text-secondary">Si desea observar su rendimiento resumido de cuantas tareas ha logrado completar comparado con el número total de tareas en una gráfica de barras, puede hacer click en el botón de abajo, si desea esconder la gráfica basta con dar click de nuevo.</p>
+        <button class="btn btn-danger" (click)="mostrargrafica()"> {{ botonGrafica }} </button>
+    </div>
+</div>
+
+<!-- grafica -->
+<div *ngIf="grafica">
+    <div class="mt-4">
+        <div style="display: block">
+            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" [colors]="lineChartColors">
+        </canvas>
+        </div>
+    </div>
+</div>
+
+<!-- despliega tareas terminadas -->
+<div class="row">
+    <div class="col text-secondary">
+        <h3 class="mt-5">Tareas terminadas</h3>
+    </div>
+</div>
+<div class="row" *ngIf="!loading">
+    <div class="col-12 mt-3" *ngFor="let tarea of tareas">
+        <div class="card text-center text-white bg-info border-light">
+            <div class="card-header bg-secondary border-light">
+                <strong>{{tarea.titulo}}</strong>
+            </div>
+            <div class="card-body border-light">
+                <h5 class="card-title">Descripción</h5>
+                <p class="card-text"> {{ tarea.descripcion }} </p>
+                <p class="card-text"><strong>Tiempo estimado: </strong> {{ tarea.minutos }} : {{ tarea.segundos }} </p>
+                <p class="card-text"><strong>Duración: </strong> {{ tarea.duracion.hours }} : {{ tarea.duracion.minutes }} : {{ tarea.duracion.seconds }} </p>
+                <p class="card-text"><strong>Fecha: </strong> {{ tarea.fecha.year }} - {{ tarea.fecha.month }} - {{ tarea.fecha.day }} </p>
+            </div>
+            <div class="card-footer text-light border-light bg-secondary">
+                {{ tarea.creacion }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TareasService } from '../../services/tareas.service';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-tarea',
@@ -9,13 +11,27 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 })
 export class CrearTareaComponent implements OnInit {
 
+  model: NgbDateStruct;
   forma: FormGroup;
   personalizado = false;
+  selecccionado = false;
+  habilitaBoton = false;
+  CreadoStatus = false;
 
   constructor( private tareasServicio: TareasService,
-               private fb: FormBuilder) {
-                 this.crearFormulario();
-               }
+               private fb: FormBuilder,
+               private router: Router) {
+    this.crearFormulario();
+  }
+
+  get fechaNoValido(): boolean {
+    return this.forma.get('fecha').invalid && this.forma.get('fecha').touched;
+  }
+
+  get selNoValido(): boolean {
+    return this.forma.get('selectorDuracion').invalid && this.forma.get('selectorDuracion').touched;
+  }
+
   get minutosNoValido(): boolean {
     return this.forma.get('minutos').invalid && this.forma.get('minutos').touched;
   }
@@ -36,6 +52,10 @@ export class CrearTareaComponent implements OnInit {
     return this.forma.get('duracion').invalid && this.forma.get('duracion').touched;
   }
 
+  get selectorNoValido(): boolean {
+    return this.forma.get('selector').invalid && this.forma.get('selector').touched;
+  }
+
   ngOnInit(): void {
   }
 
@@ -43,11 +63,32 @@ export class CrearTareaComponent implements OnInit {
     this.forma = this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(1)] ],
       descripcion: ['', [Validators.required, Validators.minLength(1)]],
-      minutos: ['', [ Validators.max(120), Validators.min(0)] ],
-      segundos: ['', [ Validators.max(60), Validators.min(0)]],
+      minutos: ['', [ Validators.max(120), Validators.min(0) ] ],
+      segundos: ['', [ Validators.max(60), Validators.min(0) ]],
+      fecha: ['', Validators.required ],
       creacion: [''],
-      selector: ['']
+      terminado: [''],
+      duracion: [''],
+      selector: ['', Validators.required],
+      selectorDuracion: ['']
     });
+  }
+
+  onSelect( valor: any ): void{
+    this.habilitaBoton = true;
+    switch (valor) {
+      case 'sel':
+        this.selecccionado = true;
+        this.personalizado = false;
+        break;
+        case 'per':
+          this.selecccionado = false;
+          this.personalizado = true;
+          break;
+      default:
+        console.log('Error de envio');
+        break;
+    }
   }
 
   crearTarea(): void {
@@ -57,7 +98,7 @@ export class CrearTareaComponent implements OnInit {
         control.markAsTouched();
       });
     }
-    switch (this.forma.value.selector) {
+    switch (this.forma.value.selectorDuracion) {
       case 'corta':
         this.forma.value.minutos = 30;
         this.forma.value.segundos = 0;
@@ -72,8 +113,20 @@ export class CrearTareaComponent implements OnInit {
             break;
           }
     this.forma.value.creacion = Date();
-    console.log( this.forma );
+    this.forma.value.terminado = false;
+    this.forma.value.duracion = {
+      hours: 0,
+      minutes: 0,
+      seconds: 0
+    };
     this.tareasServicio.crearTarea(this.forma.value);
+    this.forma.reset();
+    this.CreadoStatus = true;
+    // this.router.navigate(['/administrar']);
+  }
+
+  HabilitaB(): void {
+    this.habilitaBoton = false;
   }
 
 }

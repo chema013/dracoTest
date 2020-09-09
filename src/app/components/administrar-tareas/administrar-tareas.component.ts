@@ -10,6 +10,7 @@ export class AdministrarTareasComponent implements OnInit {
 
   tareas: any[];
   borradoStatus = false;
+  loading = true;
 
   constructor(private tareasServicio: TareasService) {
     this.cargarTareas();
@@ -20,7 +21,10 @@ export class AdministrarTareasComponent implements OnInit {
 
   async cargarTareas(): Promise<void> {
     const resp = await this.tareasServicio.cargarTareas();
-    this.tareas = resp.tareas;
+    this.tareas = resp.tareas.filter( filtrado => {
+      return filtrado.terminado === false;
+    });
+    this.loading = false;
     console.log(this.tareas);
   }
 

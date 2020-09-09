@@ -3,13 +3,17 @@ import * as countdown from 'countdown';
 import { isString } from 'util';
 import { TareasService } from '../../services/tareas.service';
 import { ActivatedRoute } from '@angular/router';
-import {NgbPaginationModule, NgbAlertModule, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 
 interface Time {
   hours: number;
   minutes: number;
   seconds: number;
+}
+
+interface Alert {
+  type: string;
+  message: string;
 }
 
 @Component({
@@ -19,6 +23,7 @@ interface Time {
 })
 export class TimerComponent implements OnInit, OnDestroy {
 
+  inicial: Time = null;
   time: Time = null;
   timerId: number = null;
   date: Date | string;
@@ -28,7 +33,12 @@ export class TimerComponent implements OnInit, OnDestroy {
   deshabilitaTodo: boolean;
   pausar = false;
 
-  constructor(private tareasServicio: TareasService, private activatedRoute: ActivatedRoute, public modal: NgbModal) {
+  alerts: Alert[] = [{
+    type: 'success',
+    message: 'Tarea finalizada, tiempo agotado.',
+  }];
+
+  constructor(private tareasServicio: TareasService, private activatedRoute: ActivatedRoute) {
     let id: string;
     this.activatedRoute.paramMap.subscribe(params => {
       id = params.get('id');
@@ -60,6 +70,7 @@ export class TimerComponent implements OnInit, OnDestroy {
       minutes: min,
       seconds: this.tarea.segundos
     };
+    this.inicial = this.time;
   }
 
   temporizador( ): void {
@@ -71,6 +82,7 @@ export class TimerComponent implements OnInit, OnDestroy {
       if ( this.time.hours === 0 && this.time.minutes === 0 && this.time.seconds === 0) {
         clearInterval(this.timerId);
         this.deshabilitaTodo = true;
+        this.tareaCompletada(this.tarea._id);
         this.time = {
           hours: 0,
           minutes: 0,
@@ -110,12 +122,10 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
 
   restart(): void {
-    // this.pausar = false;
     this.pausar = true;
     this.disabledPlay = false;
     clearInterval(this.timerId);
     this.cargarTimer();
-    // this.play();
   }
 
   pausarf(): void {
@@ -126,6 +136,17 @@ export class TimerComponent implements OnInit, OnDestroy {
     } else {
       this.play();
     }
+  }
+
+  tareaCompletada( id: string ): void {
+    clearInterval(this.timerId);
+    this.deshabilitaTodo = true;
+    const duraciont = this.tareasServicio.restaTiempo(this.inicial, this.time);
+    this.tareasServicio.actualizarTarea( id, { terminado: true, duracion: duraciont } );
+  }
+
+  close(alert: Alert): void {
+    this.alerts.splice(this.alerts.indexOf(alert), 1);
   }
 
 }

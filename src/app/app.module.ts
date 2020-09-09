@@ -13,6 +13,9 @@ import { EditarTareaComponent } from './components/editar-tarea/editar-tarea.com
 import { TimerComponent } from './components/timer/timer.component';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HistorialComponent } from './components/historial/historial.component';
+import { ChartsModule } from 'ng2-charts';
+import { FooterComponent } from './shared/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AdministrarTareasComponent,
     EditarTareaComponent,
     TimerComponent,
-    LoadingComponent
+    LoadingComponent,
+    HistorialComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +36,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
