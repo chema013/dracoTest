@@ -60,7 +60,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     let hora = 0;
     let min = 0;
     if (this.tarea.minutos > 59){
-      hora = this.tarea.minutos / 60;
+      hora = Math.trunc(this.tarea.minutos / 60);
       min = this.tarea.minutos % 60;
     }else{
       min = this.tarea.minutos;
