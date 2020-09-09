@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  // images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
-  images = ['../assets/img/0-900x500.jpg', '../assets/img/20-900x500.jpg', '../assets/img/128-900x500.jpg'];
+  // images = [20, 1011, 0].map((n) => `https://picsum.photos/id/${n}/1200/500`);
+  images = ['../assets/img/1.jpg', '../assets/img/20.jpg', '../assets/img/944.jpg'];
 
   constructor(private router: Router) { }
 

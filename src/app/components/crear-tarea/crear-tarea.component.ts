@@ -3,6 +3,7 @@ import { TareasService } from '../../services/tareas.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { PrecargarbaseService } from '../../services/precargarbase.service';
 
 @Component({
   selector: 'app-crear-tarea',
@@ -16,7 +17,9 @@ export class CrearTareaComponent implements OnInit {
   personalizado = false;
   selecccionado = false;
   habilitaBoton = false;
-  CreadoStatus = false;
+  creadoStatus = false;
+  precargadoStatus = false;
+  textoAlerta = '';
 
   constructor( private tareasServicio: TareasService,
                private fb: FormBuilder,
@@ -121,12 +124,19 @@ export class CrearTareaComponent implements OnInit {
     };
     this.tareasServicio.crearTarea(this.forma.value);
     this.forma.reset();
-    this.CreadoStatus = true;
+    this.creadoStatus = true;
+    this.textoAlerta = 'Tarea Creada exitosamente';
     // this.router.navigate(['/administrar']);
   }
 
   HabilitaB(): void {
     this.habilitaBoton = false;
+  }
+
+  precargar(): void {
+    this.tareasServicio.preCargarBase();
+    this.precargadoStatus = true;
+    this.textoAlerta = 'Precargado realizado exitosamente';
   }
 
 }

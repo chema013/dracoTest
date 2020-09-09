@@ -48,6 +48,12 @@ export class TareasService {
       .catch(err => err.error);
   }
 
+  preCargarBase(): any {
+    return this.http.get(`${url}/precargar` ).toPromise()
+      .then(res => res)
+      .catch(err => err.error);
+  }
+
   restaTiempo(inicial: Time, final: Time): Time {
     const resta: Time = {
       hours: 0,

@@ -1,8 +1,8 @@
 <!-- Alerta de borrado -->
 <div class="row">
     <div class="col mt-5">
-        <div *ngIf="CreadoStatus" class="alert alert-success alert-dismissible fade show" role="alert">
-            Tarea Creada exitsamente
+        <div *ngIf="creadoStatus || precargadoStatus" class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ textoAlerta }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -10,12 +10,20 @@
     </div>
 </div>
 
+<!-- titulo y boton de precargar -->
 <div class="row">
     <div class="col text-center text-secondary">
         <h2>Crear Tarea</h2>
     </div>
 </div>
 
+<div class="row">
+    <div class="col">
+        <button class="btn btn-outline-secondary" (click)="precargar()">Generar Aleatorios</button>
+    </div>
+</div>
+
+<!-- formulario  -->
 <form autocomplete="off" [formGroup]="forma" (ngSubmit)="crearTarea()" class="mt-5">
 
     <div class="form-group row">
@@ -84,7 +92,7 @@
     <div class="form-group row">
         <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-form-label">&nbsp;</label>
         <div class="input-group col">
-            <button [disabled]="habilitaBoton" type="submit" class="btn btn-outline-primary btn-block">
+            <button [disabled]="habilitaBoton" type="submit" class="btn btn-outline-secondary btn-block">
                 Enviar
             </button>
         </div>

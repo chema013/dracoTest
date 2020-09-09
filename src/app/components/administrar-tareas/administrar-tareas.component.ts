@@ -37,4 +37,20 @@ export class AdministrarTareasComponent implements OnInit {
     this.tareas.splice( index, 1 );
   }
 
+  filtrarDuracion(tipo: number): void{
+    this.tareas.forEach( tarea => {
+      tarea.minutos = tarea.minutos + tarea.segundos / 60;
+    });
+    if (tipo === 1) {
+      console.log('ascendente');
+      this.tareas.sort(((a, b) => a.minutos - b.minutos));
+    } else {
+      console.log('descendiente');
+      this.tareas.sort(((a, b) => b.minutos - a.minutos));
+    }
+    this.tareas.forEach( tarea => {
+      tarea.minutos = tarea.minutos - tarea.segundos / 60;
+    });
+  }
+
 }

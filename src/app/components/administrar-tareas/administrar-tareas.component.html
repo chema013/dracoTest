@@ -12,6 +12,15 @@
     </div>
 </div>
 
+<!-- Filtrado de tareas x duracion -->
+<div class="row">
+    <div class="col text-center">
+        <button class="btn btn-outline-secondary m-1" (click)="filtrarDuracion(1)">Filtrar duración (asendente)</button>
+        <button class="btn btn-outline-secondary m-1" (click)="filtrarDuracion(2)">Filtrar duración (descendente)</button>
+    </div>
+</div>
+
+<!-- tarjetas de tareas -->
 <div class="row row-cols-1 row-cols-md-3 mt-3" *ngIf="!loading">
     <div class="col mb-4" *ngFor="let tarea of tareas; let i = index">
         <div class="card text-white border-light bg-info">
